@@ -2,21 +2,285 @@
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Injetáveis Mara — Calendário de Aplicação (Wizard)</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Injetáveis Mara — Protocolos por Fármaco (Acessível)</title>
+
     <style>
+      /* ========= Paleta (Outono Escuro) ========= */
       :root {
-        --bg: #161411; /* fundo geral - outono escuro */
-        --panel: #201d1a; /* cartões */
-        --ink: #ece7e1; /* texto principal */
-        --muted: #b9a897; /* texto secundário */
-        --accent: #d08a3e; /* âmbar queimado */
+        --bg: #14110e;
+        --panel: #1d1916;
+        --ink: #f1ece6;
+        --muted: #c9b9a7;
+        --accent: #c67a2e;
         --accent-contrast: #f0a84e;
-        --line: #3a342f; /* linhas */
-        --danger: #da6a57; /* avisos */
+        --line: #3a342f;
+        --danger: #d65f4a;
+        --ok: #7fb07c;
+
+        --radius: 12px;
+        --radius-sm: 10px;
+        --space-1: 6px;
+        --space-2: 10px;
+        --space-3: 14px;
+        --space-4: 18px;
+
+        --focus-ring: 2px solid var(--accent-contrast);
+        --target-min: 44px;
       }
 
-      /* ===== Impressão: SOMENTE TÍTULO (se houver) + TABELA ===== */
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Helvetica,
+          Arial,
+          "Apple Color Emoji",
+          "Segoe UI Emoji";
+        line-height: 1.5;
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
+
+      .skip-link {
+        position: absolute;
+        left: -9999px;
+        top: auto;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+      }
+      .skip-link:focus {
+        position: static;
+        width: auto;
+        height: auto;
+        margin: var(--space-2);
+        padding: var(--space-2) var(--space-3);
+        background: var(--accent);
+        color: #1a1208;
+        border-radius: var(--radius-sm);
+        outline: var(--focus-ring);
+      }
+
+      header {
+        border-bottom: 1px solid var(--line);
+        padding: var(--space-3) var(--space-3);
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: var(--space-3);
+      }
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: var(--space-3);
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0 0 var(--space-2) 0;
+      }
+      p {
+        margin: 0 0 var(--space-2) 0;
+        color: var(--muted);
+      }
+      label {
+        display: block;
+        font-size: 0.95rem;
+        color: var(--muted);
+        margin-bottom: 4px;
+      }
+
+      input[type="text"],
+      input[type="number"],
+      select,
+      textarea {
+        width: 100%;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--line);
+        background: #100e0c;
+        color: var(--ink);
+        padding: 12px;
+        font-size: 1rem;
+        min-height: 44px;
+      }
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: var(--focus-ring);
+        outline-offset: 2px;
+      }
+
+      .btn {
+        background: var(--accent);
+        border: none;
+        color: #1a1208;
+        padding: 12px 16px;
+        border-radius: var(--radius-sm);
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 1rem;
+        min-height: var(--target-min);
+        min-width: 44px;
+      }
+      .btn.secondary {
+        background: transparent;
+        color: var(--ink);
+        border: 1px solid var(--line);
+      }
+      .btn:hover,
+      .btn:focus {
+        background: var(--accent-contrast);
+        outline: var(--focus-ring);
+        outline-offset: 2px;
+      }
+      .btn[disabled] {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .grid {
+        display: grid;
+        gap: var(--space-3);
+      }
+      .row {
+        display: flex;
+        gap: var(--space-3);
+        flex-wrap: wrap;
+        align-items: flex-end;
+      }
+      .col {
+        flex: 1 1 260px;
+        min-width: 260px;
+      }
+
+      .pill {
+        display: inline-block;
+        padding: 4px 10px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .issues {
+        margin-top: var(--space-2);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        background: #191512;
+        padding: var(--space-2);
+      }
+      .issues h3 {
+        margin: 0 0 6px 0;
+        color: var(--danger);
+      }
+
+      .table-wrap {
+        margin-top: var(--space-3);
+        overflow-x: auto;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--line);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #120f0d;
+      }
+      thead th {
+        position: sticky;
+        top: 0;
+        background: #1a1613;
+        border-bottom: 1px solid var(--line);
+      }
+      th,
+      td {
+        border: 1px solid var(--line);
+        padding: 10px;
+        vertical-align: top;
+        font-size: 0.95rem;
+      }
+      th:nth-child(1),
+      td:nth-child(1) {
+        width: 72px;
+        text-align: center;
+      }
+      td:empty::after {
+        content: "—";
+        color: var(--muted);
+      }
+
+      .check {
+        inline-size: 24px;
+        block-size: 24px;
+        border: 2px solid var(--muted);
+        border-radius: 4px;
+        display: inline-grid;
+        place-items: center;
+        user-select: none;
+      }
+      .check[aria-checked="true"] {
+        background: var(--ok);
+        border-color: var(--ok);
+      }
+      .check:focus {
+        outline: var(--focus-ring);
+        outline-offset: 2px;
+      }
+
+      .drug-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #15120f;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+      }
+      .drug-table th,
+      .drug-table td {
+        border: 1px solid var(--line);
+        padding: 8px 10px;
+      }
+      .drug-actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .proto-box {
+        background: #181410;
+        border: 1px dashed var(--line);
+        border-radius: 8px;
+        padding: 10px;
+        margin-top: 8px;
+      }
+      .proto-grid {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .help {
+        background: #191512;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: var(--space-3);
+      }
+
       @media print {
         @page {
           size: A4 landscape;
@@ -25,13 +289,12 @@
         body {
           background: #fff !important;
           color: #000 !important;
-          margin: 0;
         }
-        .header,
-        .tabs,
+        header,
         .screen-only,
         .issues,
-        .no-print {
+        .no-print,
+        .help {
           display: none !important;
         }
         .print-area {
@@ -64,653 +327,391 @@
           color: #000 !important;
         }
       }
-
-      * {
-        box-sizing: border-box;
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          scroll-behavior: auto !important;
+          animation: none !important;
+          transition: none !important;
+        }
       }
-      body {
-        margin: 0;
-        padding: 0;
-        background: var(--bg);
-        color: var(--ink);
-        font-family: Helvetica, Arial, sans-serif;
-        font-size: 16px;
-        line-height: 1.5;
-      }
-      .header {
-        padding: 20px;
-        border-bottom: 1px solid var(--line);
-      }
-      .app {
-        max-width: 1220px;
-        margin: 20px auto;
-        padding: 16px;
-      }
-      .panel {
-        background: var(--panel);
-        border: 1px solid var(--line);
-        border-radius: 12px;
-        padding: 16px;
-      }
-
-      /* Tabs */
-      .tabs {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 12px;
-      }
-      .tab-btn {
-        background: transparent;
-        color: var(--ink);
-        border: 1px solid var(--line);
-        padding: 8px 12px;
-        border-radius: 10px;
-        cursor: pointer;
-        font-weight: 600;
-      }
-      .tab-btn[aria-selected="true"] {
-        background: var(--accent);
-        color: #1a1208;
-        outline: 2px solid var(--accent-contrast);
-      }
-      .tab-btn:focus {
-        outline: 2px solid var(--accent-contrast);
-        outline-offset: 2px;
-      }
-
-      /* Botões */
-      .btn {
-        background: var(--accent);
-        border: none;
-        color: #1a1208;
-        padding: 10px 14px;
-        border-radius: 10px;
-        font-weight: 600;
-        cursor: pointer;
-        font-size: 1rem;
-      }
-      .btn.secondary {
-        background: transparent;
-        color: var(--ink);
-        border: 1px solid var(--line);
-      }
-      .btn:focus,
-      .btn:hover {
-        outline: 2px solid var(--accent-contrast);
-        outline-offset: 2px;
-        background: var(--accent-contrast);
-      }
-
-      label {
-        display: block;
-        font-size: 0.95rem;
-        color: var(--muted);
-        margin-bottom: 4px;
-      }
-      input[type="text"],
-      input[type="number"],
-      select,
-      textarea {
-        width: 100%;
-        border-radius: 10px;
-        border: 1px solid var(--line);
-        background: #151310;
-        color: var(--ink);
-        padding: 10px;
-        font-size: 1rem;
-      }
-      input:focus,
-      select:focus,
-      textarea:focus {
-        outline: 2px solid var(--accent-contrast);
-        outline-offset: 2px;
-      }
-      .grid {
-        display: grid;
-        gap: 12px;
-      }
-      .row {
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-        align-items: flex-end;
-      }
-      .col {
-        flex: 1 1 220px;
-        min-width: 220px;
-      }
-
-      .issues {
-        margin-top: 12px;
-        border: 1px solid var(--line);
-        border-radius: 10px;
-        background: #1a1714;
-        padding: 12px;
-      }
-      .issues h3 {
-        margin: 0 0 8px 0;
-        color: var(--danger);
-      }
-
-      .table-wrap {
-        margin-top: 16px;
-        overflow-x: auto;
-        border-radius: 10px;
-        border: 1px solid var(--line);
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        background: #141210;
-      }
-      thead th {
-        position: sticky;
-        top: 0;
-        background: #1c1814;
-        border-bottom: 1px solid var(--line);
-      }
-      th,
-      td {
-        border: 1px solid var(--line);
-        padding: 8px;
-        vertical-align: top;
-        font-size: 0.95rem;
-      }
-      th:nth-child(1),
-      td:nth-child(1) {
-        width: 64px;
-        text-align: center;
-      }
-      th:nth-child(2),
-      td:nth-child(2) {
-        width: 160px;
-        white-space: nowrap;
-      }
-      th:nth-child(3),
-      td:nth-child(3) {
-        width: 380px;
-      }
-      th:nth-child(4),
-      td:nth-child(4) {
-        width: auto;
-      }
-
-      .checkbox {
-        display: inline-block;
-        width: 1.2rem;
-        height: 1.2rem;
-        border: 2px solid var(--muted);
-        border-radius: 3px;
-        margin: 0 auto;
-        background: transparent;
-      }
-      .checkbox:focus {
-        outline: 2px solid var(--accent-contrast);
-        outline-offset: 2px;
-      }
-
-      /* Mini tabela de fármacos */
-      .drug-table {
-        width: 100%;
-        border-collapse: collapse;
-        background: #161310;
-        border: 1px solid var(--line);
-        border-radius: 10px;
-        overflow: hidden;
-      }
-      .drug-table th,
-      .drug-table td {
-        border: 1px solid var(--line);
-        padding: 6px 8px;
-      }
-      .drug-actions {
-        display: flex;
-        gap: 6px;
-      }
-      .pill {
-        display: inline-block;
-        padding: 2px 8px;
-        border: 1px solid var(--line);
-        border-radius: 999px;
-        color: var(--muted);
-        font-size: 0.85rem;
-      }
-
-      .help {
-        background: #1a1714;
-        border: 1px solid var(--line);
-        border-radius: 12px;
-        padding: 16px;
-      }
-      .help h3 {
-        margin-top: 0;
-      }
-      .kbd {
-        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-        background: #2a2622;
-        padding: 2px 6px;
-        border-radius: 6px;
-        border: 1px solid #3e382f;
-      }
-      .print-title {
-        display: none;
-      } /* só aparece na impressão se houver conteúdo */
     </style>
   </head>
   <body>
-    <div class="header">
-      <h1>Injetáveis Mara — Calendário de Aplicação</h1>
-      <p class="screen-only">
-        Wizard pré-formatado → opções editáveis → impressão A4 paisagem mostra
-        apenas a tabela (e o título se houver).
-      </p>
-    </div>
+    <a class="skip-link" href="#main">Pular para o conteúdo principal</a>
 
-    <div class="app">
-      <!-- Tabs -->
-      <div class="tabs" role="tablist" aria-label="Navegação de seções">
-        <button
-          class="tab-btn"
-          id="tabFerramenta"
-          role="tab"
-          aria-selected="true"
-          aria-controls="paneFerramenta"
-        >
-          Ferramenta
-        </button>
-        <button
-          class="tab-btn"
-          id="tabAjuda"
-          role="tab"
-          aria-selected="false"
-          aria-controls="paneAjuda"
-        >
-          Ajuda
-        </button>
+    <header role="banner">
+      <div class="container">
+        <h1>Injetáveis Mara — Protocolos por Fármaco</h1>
+        <p class="screen-only">
+          Cada fármaco tem seu próprio ritmo/padrão. A impressão mostra apenas
+          título e tabela.
+        </p>
       </div>
+    </header>
 
-      <!-- Ferramenta -->
-      <div id="paneFerramenta" role="tabpanel" aria-labelledby="tabFerramenta">
-        <div class="panel">
-          <div class="grid" style="gap: 18px">
-            <!-- Título opcional -->
-            <div class="row">
-              <div class="col" style="flex: 1 1 420px">
-                <label for="titleInput"
-                  >Título da tabela (opcional; aparece na impressão)</label
-                >
-                <input
-                  type="text"
-                  id="titleInput"
-                  placeholder="Ex.: Protocolo de indução — Biológico X"
-                  aria-label="Título opcional da tabela"
-                />
-              </div>
-            </div>
+    <main id="main" class="container" role="main">
+      <section class="panel" aria-describedby="legend">
+        <p id="legend" class="screen-only">
+          Defina o título (opcional) e cadastre fármacos com seus protocolos
+          individuais.
+        </p>
 
-            <!-- Passo 1: Ritmo -->
-            <div>
-              <div class="pill">Passo 1 — Ritmo</div>
-              <div class="row">
-                <div class="col" style="flex: 1 1 380px">
-                  <label for="patternSelect"
-                    >Escolha um padrão (pré-formatado)</label
-                  >
-                  <select id="patternSelect" aria-label="Padrão de ritmo">
-                    <optgroup label="Frequência fixa">
-                      <option value="daily_n_days">Diário por N dias</option>
-                      <option value="daily_n_weeks">
-                        Diário por N semanas
-                      </option>
-                      <option value="weekly_n_weeks">
-                        Semanal por N semanas
-                      </option>
-                      <option value="weekly_n_months">
-                        Semanal por N meses
-                      </option>
-                      <option value="monthly_n_months">
-                        Mensal por N meses
-                      </option>
-                    </optgroup>
-                    <optgroup label="Intervalos regulares">
-                      <option value="every_x_days_n_doses">
-                        De X em X dias por N doses
-                      </option>
-                      <option value="every_x_days_y_weeks">
-                        De X em X dias por Y semanas
-                      </option>
-                      <option value="every_x_days_y_months">
-                        De X em X dias por Y meses
-                      </option>
-                      <option value="every_x_weeks_y_months">
-                        A cada X semanas por Y meses
-                      </option>
-                      <option value="every_x_months_n_doses">
-                        A cada X meses por N doses
-                      </option>
-                    </optgroup>
-                    <optgroup label="Doses totais em período">
-                      <option value="n_doses_n_days">N doses em N dias</option>
-                      <option value="n_doses_n_weeks">
-                        N doses em N semanas
-                      </option>
-                      <option value="n_doses_3_months">
-                        N doses em 3 meses
-                      </option>
-                      <option value="n_doses_n_months">
-                        N doses em N meses
-                      </option>
-                    </optgroup>
-                    <optgroup label="Dias específicos">
-                      <option value="days_0_14_28">Dias 0/14/28</option>
-                      <option value="days_0_7_21_35">Dias 0/7/21/35</option>
-                      <option value="days_custom">
-                        Dias personalizados (campo livre)
-                      </option>
-                    </optgroup>
-                    <optgroup label="Avançada (sequenciais/compostas)">
-                      <option value="daily_x_then_weekly_y">
-                        Diário por X dias, depois semanal por Y semanas
-                      </option>
-                      <option value="weekly_x_then_monthly_y">
-                        Semanal por X semanas, depois mensal por Y meses
-                      </option>
-                      <option value="every_x_days_until_n_doses">
-                        A cada X dias até completar N doses
-                      </option>
-                    </optgroup>
-                  </select>
-                </div>
-
-                <!-- Campos dinâmicos aparecem aqui -->
-                <div
-                  id="patternFields"
-                  class="row"
-                  style="flex: 1 1 auto"
-                ></div>
-              </div>
-            </div>
-
-            <!-- Passo 2: Fármacos -->
-            <div>
-              <div class="pill">Passo 2 — Fármacos</div>
-              <div class="row">
-                <div class="col" style="flex: 1 1 100%">
-                  <table class="drug-table" aria-label="Tabela de fármacos">
-                    <thead>
-                      <tr>
-                        <th>Nome</th>
-                        <th>Dose</th>
-                        <th>Via</th>
-                        <th>Observações</th>
-                        <th>Ações</th>
-                      </tr>
-                    </thead>
-                    <tbody id="drugBody"></tbody>
-                  </table>
-                  <div class="row" style="margin-top: 8px">
-                    <button class="btn" id="btnAddDrug">
-                      + Adicionar fármaco
-                    </button>
-                    <button class="btn secondary" id="btnClearDrugs">
-                      Limpar fármacos
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Ações -->
-            <div class="row">
-              <button class="btn" id="btnGenerate" aria-label="Gerar tabela">
-                Gerar tabela
-              </button>
-              <button
-                class="btn secondary"
-                id="btnPrint"
-                aria-label="Imprimir tabela"
+        <div class="grid" style="gap: var(--space-4)">
+          <!-- Título opcional -->
+          <div class="row">
+            <div class="col" style="flex: 1 1 480px">
+              <label for="titleInput"
+                >Título da tabela (opcional; aparece na impressão)</label
               >
-                Imprimir
-              </button>
-              <button
-                class="btn secondary"
-                id="btnReset"
-                aria-label="Limpar tudo"
+              <input
+                type="text"
+                id="titleInput"
+                placeholder="Ex.: Protocolo de indução — Biológico X"
+                aria-describedby="titleHelp"
+                maxlength="120"
+              />
+              <small id="titleHelp" class="screen-only"
+                >Máx. 120 caracteres.</small
               >
-                Limpar tudo
-              </button>
             </div>
+          </div>
 
-            <!-- Pendências -->
-            <div
-              id="issues"
-              class="issues screen-only"
-              style="display: none"
-              aria-live="polite"
-            >
-              <h3>Pendências para confirmação</h3>
-              <ul id="issuesList"></ul>
-            </div>
-
-            <!-- Área impressa -->
-            <div class="print-area">
-              <h2 id="printTitle" class="print-title" aria-hidden="true"></h2>
-              <div class="table-wrap">
-                <table id="resultTable" aria-label="Calendário de aplicação">
+          <!-- Fármacos (com protocolo por linha) -->
+          <div>
+            <div class="pill" aria-hidden="true">Fármacos e protocolos</div>
+            <div class="row">
+              <div class="col" style="flex: 1 1 100%">
+                <table class="drug-table" aria-label="Tabela de fármacos">
                   <thead>
                     <tr>
-                      <th scope="col">Feito</th>
-                      <th scope="col">Semana/Dose</th>
-                      <th scope="col">Medicamentos a aplicar (via ao lado)</th>
+                      <th scope="col">Nome</th>
+                      <th scope="col">Dose</th>
+                      <th scope="col">Via</th>
                       <th scope="col">Observações</th>
+                      <th scope="col">Protocolo</th>
+                      <th scope="col">Ações</th>
                     </tr>
                   </thead>
-                  <tbody id="resultBody"></tbody>
+                  <tbody id="drugBody"></tbody>
                 </table>
+                <div class="row" style="margin-top: var(--space-2)">
+                  <button class="btn" id="btnAddDrug" type="button">
+                    + Adicionar fármaco
+                  </button>
+                  <button
+                    class="btn secondary"
+                    id="btnClearDrugs"
+                    type="button"
+                  >
+                    Limpar fármacos
+                  </button>
+                </div>
               </div>
             </div>
           </div>
+
+          <!-- Ações -->
+          <div class="row">
+            <button
+              class="btn"
+              id="btnGenerate"
+              type="button"
+              aria-label="Gerar tabela"
+            >
+              Gerar tabela
+            </button>
+            <button
+              class="btn secondary"
+              id="btnPrint"
+              type="button"
+              aria-label="Imprimir tabela"
+            >
+              Imprimir
+            </button>
+            <button
+              class="btn secondary"
+              id="btnReset"
+              type="button"
+              aria-label="Limpar tudo"
+            >
+              Limpar tudo
+            </button>
+          </div>
+
+          <!-- Pendências -->
+          <div
+            id="issues"
+            class="issues screen-only"
+            style="display: none"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            <h3>Pendências para confirmação</h3>
+            <ul id="issuesList"></ul>
+          </div>
+
+          <!-- Área impressa -->
+          <div class="print-area">
+            <h2 id="printTitle" class="print-title" aria-hidden="true"></h2>
+            <div class="table-wrap">
+              <table
+                id="resultTable"
+                aria-label="Calendário consolidado por marcos"
+              >
+                <thead>
+                  <tr>
+                    <th scope="col">Feito</th>
+                    <th scope="col">Semana/Dose</th>
+                    <th scope="col">Medicamentos a aplicar (via ao lado)</th>
+                    <th scope="col">Observações</th>
+                  </tr>
+                </thead>
+                <tbody id="resultBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Ajuda -->
+          <div class="help screen-only">
+            <h3>Como usar — rápido</h3>
+            <ol>
+              <li>(Opcional) Digite um <strong>título</strong>.</li>
+              <li>
+                Para cada <strong>fármaco</strong>, preencha Nome/Dose/Via/Obs e
+                escolha um <strong>Protocolo</strong> na própria linha (com os
+                campos X, N, Y, etc.).
+              </li>
+              <li>
+                Clique em <strong>Gerar tabela</strong>. Os marcos iguais (“Dose
+                1 (Dia 0)”, “Semana 3”…) são <strong>agregados</strong> e os
+                fármacos são mostrados juntos.
+              </li>
+              <li>Use <strong>Imprimir</strong> para folha A4 paisagem.</li>
+            </ol>
+          </div>
         </div>
-      </div>
-
-      <!-- Ajuda -->
-      <div id="paneAjuda" role="tabpanel" aria-labelledby="tabAjuda" hidden>
-        <div class="help">
-          <h3>Como usar — passo a passo</h3>
-          <ol>
-            <li>
-              (Opcional) Digite um <strong>título</strong> — ele aparece na
-              impressão.
-            </li>
-            <li>
-              No <strong>Passo 1</strong>, escolha o <strong>padrão</strong> de
-              ritmo e preencha os campos que surgirem (N, X, Y, lista de dias,
-              etc.).
-            </li>
-            <li>
-              No <strong>Passo 2</strong>, cadastre os
-              <strong>fármacos</strong>:
-              <ul>
-                <li><strong>Nome</strong> (ex.: Infliximabe)</li>
-                <li>
-                  <strong>Dose</strong> (ex.: 600 mg — use vírgula para
-                  decimais: 7,5 mg)
-                </li>
-                <li>
-                  <strong>Via</strong> (EV — endovenosa; IM — intramuscular; SC
-                  — subcutânea; VO — via oral)
-                </li>
-                <li>
-                  <strong>Observações</strong> (ex.: "diluir em 250 mL NaCl
-                  0,9%; infundir 2 h"; "Premedicação: …")
-                </li>
-              </ul>
-            </li>
-            <li>
-              Clique em <span class="kbd">Gerar tabela</span> para ver a
-              expansão por Semana/Dose.
-            </li>
-            <li>
-              Revise as <strong>Pendências</strong> (se houver) — a tabela é
-              gerada mesmo com pendências.
-            </li>
-            <li>
-              Use <span class="kbd">Imprimir</span> para obter a folha A4
-              paisagem com apenas o título e a tabela.
-            </li>
-          </ol>
-
-          <h4>Regras de consolidação</h4>
-          <ul>
-            <li>
-              Todos os fármacos de uma mesma <strong>Semana/Dose</strong> são
-              mostrados em uma única célula, separados por <strong>//</strong>.
-            </li>
-            <li>
-              A primeira ocorrência de cada via é expandida (ex.:
-              <em>(EV — endovenosa)</em>) e, nas subsequentes, é mostrada apenas
-              a sigla (ex.: <em>(EV)</em>).
-            </li>
-            <li>
-              As <strong>Observações</strong> de todos os fármacos da mesma
-              Semana/Dose são combinadas com <strong>|</strong> (sem duplicar).
-            </li>
-          </ul>
-
-          <h4>Acessibilidade (WCAG 2.2 AA)</h4>
-          <ul>
-            <li>
-              Contraste mínimo garantido, foco visível em todos os controles,
-              semântica/ARIA adequados, navegação por teclado.
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+      </section>
+    </main>
 
     <script>
       (function () {
-        // ===== Tabs
-        const tabFerramenta = document.getElementById("tabFerramenta");
-        const tabAjuda = document.getElementById("tabAjuda");
-        const paneFerramenta = document.getElementById("paneFerramenta");
-        const paneAjuda = document.getElementById("paneAjuda");
-        function selectTab(which) {
-          const isFerramenta = which === "Ferramenta";
-          tabFerramenta.setAttribute(
-            "aria-selected",
-            isFerramenta ? "true" : "false",
-          );
-          tabAjuda.setAttribute(
-            "aria-selected",
-            !isFerramenta ? "true" : "false",
-          );
-          paneFerramenta.hidden = !isFerramenta;
-          paneAjuda.hidden = isFerramenta;
-          (isFerramenta ? tabFerramenta : tabAjuda).focus();
+        "use strict";
+
+        /* =========================
+         * Utilidades puras (SRP)
+         * ========================= */
+        const VIA_LABEL = Object.freeze({
+          EV: "endovenosa",
+          IM: "intramuscular",
+          SC: "subcutânea",
+          VO: "via oral",
+        });
+
+        function normalizeDoseSpacing(dose) {
+          if (!dose) return "";
+          return String(dose)
+            .replace(/(\d+)\.(\d+)/g, "$1,$2")
+            .replace(/\s*(mg|g|mL|mcg|µg|UI|U)\b/gi, " $1")
+            .trim();
         }
-        tabFerramenta.addEventListener("click", () => selectTab("Ferramenta"));
-        tabAjuda.addEventListener("click", () => selectTab("Ajuda"));
+        function uniqClean(arr) {
+          return [
+            ...new Set(
+              (arr || []).map((s) => String(s).trim()).filter(Boolean),
+            ),
+          ];
+        }
+        function parsePositiveInt(v) {
+          const n = parseInt(String(v).trim(), 10);
+          return Number.isFinite(n) && n > 0 ? n : null;
+        }
 
-        // ===== UI Elements
-        const titleInput = document.getElementById("titleInput");
-        const printTitle = document.getElementById("printTitle");
-        const patternSelect = document.getElementById("patternSelect");
-        const patternFields = document.getElementById("patternFields");
+        /* ---------- Geradores de rótulos ---------- */
+        function labels_daily_n_days(n) {
+          const out = [];
+          for (let i = 1; i <= n; i++) out.push(`Dose ${i} (Dia ${i - 1})`);
+          return out;
+        }
+        function labels_daily_n_weeks(n) {
+          const out = [];
+          for (let i = 1; i <= n * 7; i++) out.push(`Dose ${i} (Dia ${i - 1})`);
+          return out;
+        }
+        function labels_weekly_n_weeks(n) {
+          const out = [];
+          for (let i = 1; i <= n; i++) out.push(`Semana ${i}`);
+          return out;
+        }
+        function labels_weekly_n_months(n) {
+          const totalWeeks = n * 4;
+          const out = [];
+          for (let w = 1; w <= totalWeeks; w++) out.push(`Semana ${w}`);
+          return out;
+        }
+        function labels_monthly_n_months(n) {
+          const out = [];
+          for (let i = 1; i <= n; i++) out.push(`Dose ${i}`);
+          return out;
+        }
+        function labels_every_x_days_n_doses(x, n) {
+          const out = [];
+          for (let i = 1; i <= n; i++)
+            out.push(`Dose ${i} (Dia ${(i - 1) * x})`);
+          return out;
+        }
+        function labels_every_x_days_y_weeks(x, y) {
+          const totalDays = y * 7;
+          const out = [];
+          let day = 0,
+            i = 1;
+          while (day <= totalDays - 1) {
+            out.push(`Dose ${i} (Dia ${day})`);
+            day += x;
+            i++;
+          }
+          return out;
+        }
+        function labels_every_x_days_y_months(x, y) {
+          const totalDays = y * 30;
+          const out = [];
+          let day = 0,
+            i = 1;
+          while (day <= totalDays - 1) {
+            out.push(`Dose ${i} (Dia ${day})`);
+            day += x;
+            i++;
+          }
+          return out;
+        }
+        function labels_every_x_weeks_y_months(x, y) {
+          const totalWeeks = y * 4;
+          const out = [];
+          for (let w = 1; w <= totalWeeks; w += x) out.push(`Semana ${w}`);
+          return out;
+        }
+        function labels_every_x_months_n_doses(x, n) {
+          const out = [];
+          for (let i = 1; i <= n; i++) out.push(`Dose ${i}`);
+          return out;
+        }
+        function labels_n_doses_n_days(n, p) {
+          const out = [];
+          if (n <= 0) return out;
+          if (n === 1) return ["Dose 1 (Dia 0)"];
+          const step = Math.max(1, Math.floor((p - 1) / (n - 1)));
+          let day = 0;
+          for (let i = 1; i <= n; i++) {
+            out.push(`Dose ${i} (Dia ${day})`);
+            day += step;
+          }
+          return out;
+        }
+        function labels_n_doses_n_weeks(n, p) {
+          return labels_n_doses_n_days(n, p * 7);
+        }
+        function labels_n_doses_3_months(n) {
+          return labels_n_doses_n_days(n, 3 * 30);
+        }
+        function labels_n_doses_n_months(n, p) {
+          return labels_n_doses_n_days(n, p * 30);
+        }
+        function labels_days_0_14_28() {
+          return ["Dose 1 (Dia 0)", "Dose 2 (Dia 14)", "Dose 3 (Dia 28)"];
+        }
+        function labels_days_0_7_21_35() {
+          return [
+            "Dose 1 (Dia 0)",
+            "Dose 2 (Dia 7)",
+            "Dose 3 (Dia 21)",
+            "Dose 4 (Dia 35)",
+          ];
+        }
+        function labels_days_custom(list) {
+          const nums = String(list)
+            .split(/[,; ]+/)
+            .map((x) => x.trim())
+            .filter(Boolean)
+            .map((x) => parseInt(x, 10))
+            .filter((n) => Number.isFinite(n));
+          return nums.map((d, i) => `Dose ${i + 1} (Dia ${d})`);
+        }
+        function labels_daily_x_then_weekly_y(x, y) {
+          const part1 = labels_every_x_days_n_doses(1, x);
+          const part2 = labels_weekly_n_weeks(y);
+          return {
+            blocks: [
+              { type: "DIA", labels: part1 },
+              { type: "SEMANA", labels: part2 },
+            ],
+          };
+        }
+        function labels_weekly_x_then_monthly_y(x, y) {
+          const part1 = labels_weekly_n_weeks(x);
+          const part2 = labels_monthly_n_months(y);
+          return {
+            blocks: [
+              { type: "SEMANA", labels: part1 },
+              { type: "DOSE", labels: part2 },
+            ],
+          };
+        }
+        function labels_every_x_days_until_n_doses(x, n) {
+          return labels_every_x_days_n_doses(x, n);
+        }
 
-        const btnAddDrug = document.getElementById("btnAddDrug");
-        const btnClearDrugs = document.getElementById("btnClearDrugs");
-        const drugBody = document.getElementById("drugBody");
+        /* =========================
+         * DOM helpers
+         * ========================= */
+        const $ = (s) => document.querySelector(s);
+        const titleInput = $("#titleInput");
+        const printTitle = $("#printTitle");
+        const drugBody = $("#drugBody");
+        const resultBody = $("#resultBody");
+        const issuesBox = $("#issues");
+        const issuesList = $("#issuesList");
 
-        const btnGenerate = document.getElementById("btnGenerate");
-        const btnPrint = document.getElementById("btnPrint");
-        const btnReset = document.getElementById("btnReset");
+        function save(key, val) {
+          try {
+            localStorage.setItem(key, JSON.stringify(val));
+          } catch {}
+        }
+        function load(key, fallback) {
+          try {
+            const v = localStorage.getItem(key);
+            return v ? JSON.parse(v) : fallback;
+          } catch {
+            return fallback;
+          }
+        }
 
-        const resultBody = document.getElementById("resultBody");
-        const issuesBox = document.getElementById("issues");
-        const issuesList = document.getElementById("issuesList");
-
-        // ===== Title sync (print)
+        /* =========================
+         * Título (impressão)
+         * ========================= */
         function syncTitle() {
           const t = (titleInput.value || "").trim();
           if (t) {
             printTitle.textContent = t;
             printTitle.setAttribute("aria-hidden", "false");
-            printTitle.style.display = ""; // só aparece na impressão via CSS
+            printTitle.style.display = "";
           } else {
             printTitle.textContent = "";
             printTitle.setAttribute("aria-hidden", "true");
             printTitle.style.display = "none";
           }
-          localStorage.setItem("mara_title", t);
+          save("mara_title", t);
         }
         titleInput.addEventListener("input", syncTitle);
-
-        // ===== Local storage (restore)
-        function restoreState() {
-          const t = localStorage.getItem("mara_title") || "";
-          titleInput.value = t;
+        (function restoreTitle() {
+          const t = load("mara_title", "");
+          titleInput.value = t || "";
           syncTitle();
-        }
-        restoreState();
+        })();
 
-        // ===== Drugs table helpers
-        const VIA_LABEL = {
-          EV: "endovenosa",
-          IM: "intramuscular",
-          SC: "subcutânea",
-          VO: "via oral",
-        };
-        let seenVia = {}; // controla expansão de via na primeira ocorrência por execução
-
-        function addDrugRow(drug) {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-      <td><input type="text" class="drug-name" placeholder="Ex.: Infliximabe" value="${drug?.name || ""}"></td>
-      <td><input type="text" class="drug-dose" placeholder="Ex.: 600 mg" value="${drug?.dose || ""}"></td>
-      <td>
-        <select class="drug-via" aria-label="Via">
-          <option value="EV"${drug?.via === "EV" ? " selected" : ""}>EV — endovenosa</option>
-          <option value="IM"${drug?.via === "IM" ? " selected" : ""}>IM — intramuscular</option>
-          <option value="SC"${drug?.via === "SC" ? " selected" : ""}>SC — subcutânea</option>
-          <option value="VO"${drug?.via === "VO" ? " selected" : ""}>VO — via oral</option>
-        </select>
-      </td>
-      <td><input type="text" class="drug-obs" placeholder="Ex.: diluir em 250 mL NaCl 0,9%; infundir 2 h; Premedicação: ..." value="${drug?.obs || ""}"></td>
-      <td>
-        <div class="drug-actions">
-          <button class="btn secondary btn-dup" title="Duplicar">Duplicar</button>
-          <button class="btn secondary btn-del" title="Remover">Remover</button>
-        </div>
-      </td>
-    `;
-          drugBody.appendChild(tr);
-
-          tr.querySelector(".btn-del").addEventListener("click", () => {
-            tr.remove();
-          });
-          tr.querySelector(".btn-dup").addEventListener("click", () => {
-            const d = {
-              name: tr.querySelector(".drug-name").value,
-              dose: tr.querySelector(".drug-dose").value,
-              via: tr.querySelector(".drug-via").value,
-              obs: tr.querySelector(".drug-obs").value,
-            };
-            addDrugRow(d);
-          });
-        }
-
-        btnAddDrug.addEventListener("click", () => addDrugRow());
-        btnClearDrugs.addEventListener(
-          "click",
-          () => (drugBody.innerHTML = ""),
-        );
-
-        // Seed uma linha inicial
-        addDrugRow();
-
-        // ===== Patterns (campos dinâmicos)
-        const fieldTemplates = {
+        /* =========================
+         * Templates de campos do Protocolo
+         * ========================= */
+        const fieldTemplates = Object.freeze({
+          // Frequência fixa
           daily_n_days: [
             {
               key: "n",
@@ -761,24 +762,10 @@
               placeholder: "Ex.: 3",
             },
           ],
-
+          // Intervalos regulares
           every_x_days_n_doses: [
-            {
-              key: "x",
-              label: "X (dias)",
-              type: "number",
-              min: 1,
-              step: 1,
-              placeholder: "Ex.: 2",
-            },
-            {
-              key: "n",
-              label: "N (doses)",
-              type: "number",
-              min: 1,
-              step: 1,
-              placeholder: "Ex.: 6",
-            },
+            { key: "x", label: "X (dias)", type: "number", min: 1, step: 1 },
+            { key: "n", label: "N (doses)", type: "number", min: 1, step: 1 },
           ],
           every_x_days_y_weeks: [
             { key: "x", label: "X (dias)", type: "number", min: 1, step: 1 },
@@ -796,7 +783,7 @@
             { key: "x", label: "X (meses)", type: "number", min: 1, step: 1 },
             { key: "n", label: "N (doses)", type: "number", min: 1, step: 1 },
           ],
-
+          // Doses totais
           n_doses_n_days: [
             { key: "n", label: "N (doses)", type: "number", min: 1, step: 1 },
             {
@@ -830,18 +817,18 @@
               step: 1,
             },
           ],
-
+          // Dias específicos
           days_0_14_28: [],
           days_0_7_21_35: [],
           days_custom: [
             {
               key: "list",
-              label: "Dias (lista: 0, 14, 28...)",
+              label: "Dias (0, 14, 28...)",
               type: "text",
               placeholder: "Ex.: 0, 7, 21, 35",
             },
           ],
-
+          // Avançadas
           daily_x_then_weekly_y: [
             {
               key: "x",
@@ -878,34 +865,160 @@
             { key: "x", label: "X (dias)", type: "number", min: 1, step: 1 },
             { key: "n", label: "N (doses)", type: "number", min: 1, step: 1 },
           ],
-        };
+        });
 
-        function renderPatternFields() {
-          patternFields.innerHTML = "";
-          const key = patternSelect.value;
+        const patternOptionsHTML = `
+          <optgroup label="Frequência fixa">
+            <option value="daily_n_days">Diário por N dias</option>
+            <option value="daily_n_weeks">Diário por N semanas</option>
+            <option value="weekly_n_weeks">Semanal por N semanas</option>
+            <option value="weekly_n_months">Semanal por N meses</option>
+            <option value="monthly_n_months">Mensal por N meses</option>
+          </optgroup>
+          <optgroup label="Intervalos regulares">
+            <option value="every_x_days_n_doses">De X em X dias por N doses</option>
+            <option value="every_x_days_y_weeks">De X em X dias por Y semanas</option>
+            <option value="every_x_days_y_months">De X em X dias por Y meses</option>
+            <option value="every_x_weeks_y_months">A cada X semanas por Y meses</option>
+            <option value="every_x_months_n_doses">A cada X meses por N doses</option>
+          </optgroup>
+          <optgroup label="Doses totais em período">
+            <option value="n_doses_n_days">N doses em N dias</option>
+            <option value="n_doses_n_weeks">N doses em N semanas</option>
+            <option value="n_doses_3_months">N doses em 3 meses</option>
+            <option value="n_doses_n_months">N doses em N meses</option>
+          </optgroup>
+          <optgroup label="Dias específicos">
+            <option value="days_0_14_28">Dias 0/14/28</option>
+            <option value="days_0_7_21_35">Dias 0/7/21/35</option>
+            <option value="days_custom">Dias personalizados</option>
+          </optgroup>
+          <optgroup label="Avançada (sequenciais/compostas)">
+            <option value="daily_x_then_weekly_y">Diário por X dias, depois semanal por Y semanas</option>
+            <option value="weekly_x_then_monthly_y">Semanal por X semanas, depois mensal por Y meses</option>
+            <option value="every_x_days_until_n_doses">A cada X dias até N doses</option>
+          </optgroup>
+        `;
+
+        /* =========================
+         * Linha de fármaco
+         * ========================= */
+        function renderPatternFields(container, key) {
+          container.innerHTML = "";
           const fields = fieldTemplates[key] || [];
+          const grid = document.createElement("div");
+          grid.className = "proto-grid";
           fields.forEach((f) => {
+            const id = `pf_${key}_${f.key}_${Math.random().toString(36).slice(2, 7)}`;
+            const extra =
+              f.type === "number"
+                ? `inputmode="numeric" min="${f.min || 1}" step="${f.step || 1}"`
+                : "";
             const wrap = document.createElement("div");
-            wrap.className = "col";
-            const id = `fld_${key}_${f.key}`;
             wrap.innerHTML = `
-        <label for="${id}">${f.label}</label>
-        <input ${f.type === "number" ? 'inputmode="numeric"' : ""}
-               type="${f.type}" id="${id}" data-key="${f.key}" placeholder="${f.placeholder || ""}"
-               ${f.min ? `min="${f.min}"` : ""} ${f.step ? `step="${f.step}"` : ""} />
-      `;
-            patternFields.appendChild(wrap);
+              <label for="${id}">${f.label}</label>
+              <input ${extra} type="${f.type}" id="${id}" data-key="${f.key}" placeholder="${f.placeholder || ""}" />
+            `;
+            grid.appendChild(wrap);
+          });
+          container.appendChild(grid);
+        }
+
+        function addDrugRow(drug) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td><input type="text" class="drug-name" placeholder="Ex.: Infliximabe" value="${drug?.name || ""}" aria-label="Nome do fármaco"></td>
+            <td><input type="text" class="drug-dose" placeholder="Ex.: 600 mg" value="${drug?.dose || ""}" aria-label="Dose"></td>
+            <td>
+              <label class="screen-only" for="">Via</label>
+              <select class="drug-via" aria-label="Via">
+                <option value="EV"${drug?.via === "EV" ? " selected" : ""}>EV — endovenosa</option>
+                <option value="IM"${drug?.via === "IM" ? " selected" : ""}>IM — intramuscular</option>
+                <option value="SC"${drug?.via === "SC" ? " selected" : ""}>SC — subcutânea</option>
+                <option value="VO"${drug?.via === "VO" ? " selected" : ""}>VO — via oral</option>
+              </select>
+            </td>
+            <td><input type="text" class="drug-obs" placeholder="Ex.: diluir em 250 mL NaCl 0,9%; infundir 2 h; Premedicação: ..." value="${drug?.obs || ""}" aria-label="Observações"></td>
+            <td>
+              <div class="proto-box">
+                <label for="">Protocolo (individual)</label>
+                <select class="drug-pattern" aria-label="Padrão de protocolo">
+                  ${patternOptionsHTML}
+                </select>
+                <div class="drug-pattern-fields" style="margin-top:8px"></div>
+              </div>
+            </td>
+            <td>
+              <div class="drug-actions">
+                <button class="btn secondary btn-dup" type="button" title="Duplicar fármaco">Duplicar</button>
+                <button class="btn secondary btn-del" type="button" title="Remover fármaco">Remover</button>
+              </div>
+            </td>
+          `;
+          drugBody.appendChild(tr);
+
+          const patternSelect = tr.querySelector(".drug-pattern");
+          const fieldsBox = tr.querySelector(".drug-pattern-fields");
+
+          // estado inicial
+          patternSelect.value = drug?.pattern || "daily_n_days";
+          renderPatternFields(fieldsBox, patternSelect.value);
+
+          // preencher campos se houver
+          if (drug?.patternValues) {
+            Object.entries(drug.patternValues).forEach(([k, v]) => {
+              const el = fieldsBox.querySelector(`[data-key="${k}"]`);
+              if (el) el.value = v;
+            });
+          }
+
+          patternSelect.addEventListener("change", () => {
+            renderPatternFields(fieldsBox, patternSelect.value);
           });
 
-          // Placeholders úteis por padrão
-          if (key === "n_doses_3_months") {
-            // nada extra; só N
-          }
+          tr.querySelector(".btn-del").addEventListener("click", () =>
+            tr.remove(),
+          );
+          tr.querySelector(".btn-dup").addEventListener("click", () => {
+            const snapshot = collectDrugFromRow(tr);
+            addDrugRow(snapshot);
+          });
         }
-        patternSelect.addEventListener("change", renderPatternFields);
-        renderPatternFields(); // inicial
 
-        // ===== Issues helpers
+        $("#btnAddDrug").addEventListener("click", () => addDrugRow());
+        $("#btnClearDrugs").addEventListener(
+          "click",
+          () => (drugBody.innerHTML = ""),
+        );
+        addDrugRow(); // seed
+
+        /* =========================
+         * Coleta por linha
+         * ========================= */
+        function collectDrugFromRow(tr) {
+          const name = tr.querySelector(".drug-name").value || "";
+          const dose = tr.querySelector(".drug-dose").value || "";
+          const via = tr.querySelector(".drug-via").value || "";
+          const obs = tr.querySelector(".drug-obs").value || "";
+          const pattern = tr.querySelector(".drug-pattern").value;
+          const patternValues = {};
+          tr.querySelectorAll(".drug-pattern-fields [data-key]").forEach(
+            (el) => {
+              patternValues[el.getAttribute("data-key")] = el.value.trim();
+            },
+          );
+          return { name, dose, via, obs, pattern, patternValues };
+        }
+
+        function collectDrugs() {
+          return [...drugBody.querySelectorAll("tr")]
+            .map((tr) => collectDrugFromRow(tr))
+            .filter((d) => d.name || d.dose || d.obs);
+        }
+
+        /* =========================
+         * Issues (pendências)
+         * ========================= */
         function clearIssues() {
           issuesList.innerHTML = "";
           issuesBox.style.display = "none";
@@ -919,358 +1032,185 @@
           if (issuesList.children.length > 0) issuesBox.style.display = "";
         }
 
-        // ===== Result rendering helpers
-        function clearResult() {
-          resultBody.innerHTML = "";
-          seenVia = {};
-        }
-
-        function viaFormat(sigla) {
+        /* =========================
+         * Formatação de medicação
+         * ========================= */
+        function viaFormat(sigla, seen) {
           if (!sigla) return "(via não especificada)";
-          if (!seenVia[sigla]) {
-            seenVia[sigla] = true;
+          if (!seen[sigla]) {
+            seen[sigla] = true;
             return `(${sigla} — ${VIA_LABEL[sigla]})`;
           }
           return `(${sigla})`;
         }
-
-        function normalizeDoseSpacing(dose) {
-          if (!dose) return "";
-          // converte 1.5 para 1,5 e normaliza espaço com unidade
-          return dose
-            .replace(/(\d+)\.(\d+)/g, "$1,$2")
-            .replace(/\s*(mg|g|mL|mcg|µg|UI|U)\b/gi, " $1");
-        }
-
-        function buildMedString(d) {
-          const name = (d.name || "").trim();
-          const dose = normalizeDoseSpacing((d.dose || "").trim());
-          const via = viaFormat(d.via || "");
+        function buildMedString(d, seen) {
+          const name = String(d.name || "").trim();
+          const dose = normalizeDoseSpacing(String(d.dose || "").trim());
+          const via = viaFormat(d.via || "", seen);
           return [name, dose].filter(Boolean).join(" ") + " " + via;
         }
 
-        function uniq(arr) {
-          return [...new Set(arr.filter(Boolean).map((s) => s.trim()))];
+        /* =========================
+         * Geração de rótulos por fármaco
+         * ========================= */
+        function getValNum(obj, k) {
+          return parsePositiveInt(obj[k]);
         }
 
-        // ===== Collect drugs
-        function collectDrugs() {
-          const rows = [...drugBody.querySelectorAll("tr")];
-          const drugs = rows
-            .map((tr) => ({
-              name: tr.querySelector(".drug-name").value || "",
-              dose: tr.querySelector(".drug-dose").value || "",
-              via: tr.querySelector(".drug-via").value || "",
-              obs: tr.querySelector(".drug-obs").value || "",
-            }))
-            .filter((d) => d.name || d.dose || d.obs); // mantém linhas não vazias
-          return drugs;
-        }
-
-        // ===== Label generators
-        function labels_daily_n_days(n) {
-          const out = [];
-          for (let i = 1; i <= n; i++) out.push(`Dose ${i} (Dia ${i - 1})`);
-          return out;
-        }
-        function labels_daily_n_weeks(n) {
-          const out = [];
-          for (let i = 1; i <= n * 7; i++) out.push(`Dose ${i} (Dia ${i - 1})`);
-          return out;
-        }
-        function labels_weekly_n_weeks(n) {
-          const out = [];
-          for (let i = 1; i <= n; i++) out.push(`Semana ${i}`);
-          return out;
-        }
-        function labels_weekly_n_months(n) {
-          // 1 mês ≈ 4 semanas (aproximação explícita)
-          const totalWeeks = n * 4;
-          const out = [];
-          for (let w = 1; w <= totalWeeks; w++) out.push(`Semana ${w}`);
-          return out;
-        }
-        function labels_monthly_n_months(n) {
-          const out = [];
-          for (let i = 1; i <= n; i++) out.push(`Dose ${i}`);
-          return out;
-        }
-
-        function labels_every_x_days_n_doses(x, n) {
-          const out = [];
-          for (let i = 1; i <= n; i++)
-            out.push(`Dose ${i} (Dia ${(i - 1) * x})`);
-          return out;
-        }
-        function labels_every_x_days_y_weeks(x, y) {
-          const totalDays = y * 7;
-          const out = [];
-          let day = 0,
-            i = 1;
-          while (day <= totalDays - 1) {
-            out.push(`Dose ${i} (Dia ${day})`);
-            day += x;
-            i++;
-          }
-          return out;
-        }
-        function labels_every_x_days_y_months(x, y) {
-          const totalDays = y * 30; // aproximação de mês em dias
-          const out = [];
-          let day = 0,
-            i = 1;
-          while (day <= totalDays - 1) {
-            out.push(`Dose ${i} (Dia ${day})`);
-            day += x;
-            i++;
-          }
-          return out;
-        }
-        function labels_every_x_weeks_y_months(x, y) {
-          const totalWeeks = y * 4; // aproximação mês→semana
-          const out = [];
-          for (let w = 1; w <= totalWeeks; w += x) out.push(`Semana ${w}`);
-          return out;
-        }
-        function labels_every_x_months_n_doses(x, n) {
-          const out = [];
-          for (let i = 1; i <= n; i++) out.push(`Dose ${i}`);
-          return out;
-        }
-
-        function labels_n_doses_n_days(n, p) {
-          // Distribui uniformemente dentro do período em dias, iniciando Dia 0
-          const out = [];
-          if (n <= 0) return out;
-          if (n === 1) return ["Dose 1 (Dia 0)"];
-          const step = Math.max(1, Math.floor((p - 1) / (n - 1))); // simples
-          let day = 0;
-          for (let i = 1; i <= n; i++) {
-            out.push(`Dose ${i} (Dia ${day})`);
-            day += step;
-          }
-          return out;
-        }
-        function labels_n_doses_n_weeks(n, p) {
-          const totalDays = p * 7;
-          return labels_n_doses_n_days(n, totalDays);
-          // rótulos continuam como Dose (Dia X) para evitar datas absolutas
-        }
-        function labels_n_doses_3_months(n) {
-          const totalDays = 3 * 30;
-          return labels_n_doses_n_days(n, totalDays);
-        }
-        function labels_n_doses_n_months(n, p) {
-          const totalDays = p * 30;
-          return labels_n_doses_n_days(n, totalDays);
-        }
-
-        function labels_days_0_14_28() {
-          return ["Dose 1 (Dia 0)", "Dose 2 (Dia 14)", "Dose 3 (Dia 28)"];
-        }
-        function labels_days_0_7_21_35() {
-          return [
-            "Dose 1 (Dia 0)",
-            "Dose 2 (Dia 7)",
-            "Dose 3 (Dia 21)",
-            "Dose 4 (Dia 35)",
-          ];
-        }
-        function labels_days_custom(list) {
-          const nums = list
-            .split(/[,; ]+/)
-            .map((x) => x.trim())
-            .filter(Boolean)
-            .map((x) => parseInt(x, 10))
-            .filter((n) => !isNaN(n));
-          return nums.map((d, i) => `Dose ${i + 1} (Dia ${d})`);
-        }
-
-        function labels_daily_x_then_weekly_y(x, y) {
-          const part1 = labels_every_x_days_n_doses(1, x); // diário: de 1 em 1 dia por X doses (Dia 0..)
-          const part2 = labels_weekly_n_weeks(y); // Semanas 1..y
-          return {
-            blocks: [
-              { type: "DIA", labels: part1 },
-              { type: "SEMANA", labels: part2 },
-            ],
-          };
-        }
-        function labels_weekly_x_then_monthly_y(x, y) {
-          const part1 = labels_weekly_n_weeks(x);
-          const part2 = labels_monthly_n_months(y);
-          return {
-            blocks: [
-              { type: "SEMANA", labels: part1 },
-              { type: "DOSE", labels: part2 },
-            ],
-          };
-        }
-        function labels_every_x_days_until_n_doses(x, n) {
-          return labels_every_x_days_n_doses(x, n);
-        }
-
-        // ===== Generate labels by pattern
-        function generateLabels() {
-          const key = patternSelect.value;
-          const get = (k) => {
-            const el = patternFields.querySelector(`[data-key="${k}"]`);
-            return el ? el.value.trim() : "";
-          };
-
-          // Lê campos conforme template
-          function num(k, def = null) {
-            const v = parseInt(get(k), 10);
-            return isNaN(v) ? def : Math.max(1, v);
-          }
-
-          let labels = [];
-          let composite = null; // {blocks:[{type,labels}]}
+        function generateLabelsForDrug(drug) {
+          const key = drug.pattern;
+          const p = drug.patternValues || {};
           const issues = [];
+          let labels = [],
+            composite = null;
 
           switch (key) {
             // Frequência fixa
             case "daily_n_days": {
-              const n = num("n");
-              if (!n) {
-                issues.push("Informe N (dias).");
-                break;
-              }
-              labels = labels_daily_n_days(n);
+              const n = getValNum(p, "n");
+              if (!n)
+                issues.push(`[${drug.name || "sem nome"}] Informe N (dias).`);
+              else labels = labels_daily_n_days(n);
               break;
             }
             case "daily_n_weeks": {
-              const n = num("n");
-              if (!n) {
-                issues.push("Informe N (semanas).");
-                break;
-              }
-              labels = labels_daily_n_weeks(n);
+              const n = getValNum(p, "n");
+              if (!n)
+                issues.push(
+                  `[${drug.name || "sem nome"}] Informe N (semanas).`,
+                );
+              else labels = labels_daily_n_weeks(n);
               break;
             }
             case "weekly_n_weeks": {
-              const n = num("n");
-              if (!n) {
-                issues.push("Informe N (semanas).");
-                break;
-              }
-              labels = labels_weekly_n_weeks(n);
+              const n = getValNum(p, "n");
+              if (!n)
+                issues.push(
+                  `[${drug.name || "sem nome"}] Informe N (semanas).`,
+                );
+              else labels = labels_weekly_n_weeks(n);
               break;
             }
             case "weekly_n_months": {
-              const n = num("n");
-              if (!n) {
-                issues.push("Informe N (meses).");
-                break;
+              const n = getValNum(p, "n");
+              if (!n)
+                issues.push(`[${drug.name || "sem nome"}] Informe N (meses).`);
+              else {
+                labels = labels_weekly_n_months(n);
+                issues.push("Aproximação: 1 mês ≈ 4 semanas.");
               }
-              labels = labels_weekly_n_months(n);
-              issues.push("Aproximação: 1 mês ≈ 4 semanas.");
               break;
             }
             case "monthly_n_months": {
-              const n = num("n");
-              if (!n) {
-                issues.push("Informe N (meses).");
-                break;
-              }
-              labels = labels_monthly_n_months(n);
+              const n = getValNum(p, "n");
+              if (!n)
+                issues.push(`[${drug.name || "sem nome"}] Informe N (meses).`);
+              else labels = labels_monthly_n_months(n);
               break;
             }
 
             // Intervalos regulares
             case "every_x_days_n_doses": {
-              const x = num("x"),
-                n = num("n");
-              if (!x || !n) {
-                issues.push("Informe X (dias) e N (doses).");
-                break;
-              }
-              labels = labels_every_x_days_n_doses(x, n);
+              const x = getValNum(p, "x"),
+                n = getValNum(p, "n");
+              if (!x || !n)
+                issues.push(
+                  `[${drug.name || "sem nome"}] Informe X (dias) e N (doses).`,
+                );
+              else labels = labels_every_x_days_n_doses(x, n);
               break;
             }
             case "every_x_days_y_weeks": {
-              const x = num("x"),
-                y = num("y");
-              if (!x || !y) {
-                issues.push("Informe X (dias) e Y (semanas).");
-                break;
-              }
-              labels = labels_every_x_days_y_weeks(x, y);
+              const x = getValNum(p, "x"),
+                y = getValNum(p, "y");
+              if (!x || !y)
+                issues.push(
+                  `[${drug.name || "sem nome"}] Informe X (dias) e Y (semanas).`,
+                );
+              else labels = labels_every_x_days_y_weeks(x, y);
               break;
             }
             case "every_x_days_y_months": {
-              const x = num("x"),
-                y = num("y");
-              if (!x || !y) {
-                issues.push("Informe X (dias) e Y (meses).");
-                break;
+              const x = getValNum(p, "x"),
+                y = getValNum(p, "y");
+              if (!x || !y)
+                issues.push(
+                  `[${drug.name || "sem nome"}] Informe X (dias) e Y (meses).`,
+                );
+              else {
+                labels = labels_every_x_days_y_months(x, y);
+                issues.push("Aproximação: 1 mês ≈ 30 dias.");
               }
-              labels = labels_every_x_days_y_months(x, y);
-              issues.push("Aproximação: 1 mês ≈ 30 dias.");
               break;
             }
             case "every_x_weeks_y_months": {
-              const x = num("x"),
-                y = num("y");
-              if (!x || !y) {
-                issues.push("Informe X (semanas) e Y (meses).");
-                break;
+              const x = getValNum(p, "x"),
+                y = getValNum(p, "y");
+              if (!x || !y)
+                issues.push(
+                  `[${drug.name || "sem nome"}] Informe X (semanas) e Y (meses).`,
+                );
+              else {
+                labels = labels_every_x_weeks_y_months(x, y);
+                issues.push("Aproximação: 1 mês ≈ 4 semanas.");
               }
-              labels = labels_every_x_weeks_y_months(x, y);
-              issues.push("Aproximação: 1 mês ≈ 4 semanas.");
               break;
             }
             case "every_x_months_n_doses": {
-              const x = num("x"),
-                n = num("n");
-              if (!x || !n) {
-                issues.push("Informe X (meses) e N (doses).");
-                break;
-              }
-              labels = labels_every_x_months_n_doses(x, n);
+              const x = getValNum(p, "x"),
+                n = getValNum(p, "n");
+              if (!x || !n)
+                issues.push(
+                  `[${drug.name || "sem nome"}] Informe X (meses) e N (doses).`,
+                );
+              else labels = labels_every_x_months_n_doses(x, n);
               break;
             }
 
-            // Doses totais em período
+            // Doses totais
             case "n_doses_n_days": {
-              const n = num("n"),
-                p = num("p");
-              if (!n || !p) {
-                issues.push("Informe N (doses) e período em dias.");
-                break;
-              }
-              labels = labels_n_doses_n_days(n, p);
+              const n = getValNum(p, "n"),
+                per = getValNum(p, "p");
+              if (!n || !per)
+                issues.push(
+                  `[${drug.name || "sem nome"}] Informe N (doses) e período (dias).`,
+                );
+              else labels = labels_n_doses_n_days(n, per);
               break;
             }
             case "n_doses_n_weeks": {
-              const n = num("n"),
-                p = num("p");
-              if (!n || !p) {
-                issues.push("Informe N (doses) e período em semanas.");
-                break;
-              }
-              labels = labels_n_doses_n_weeks(n, p);
+              const n = getValNum(p, "n"),
+                per = getValNum(p, "p");
+              if (!n || !per)
+                issues.push(
+                  `[${drug.name || "sem nome"}] Informe N (doses) e período (semanas).`,
+                );
+              else labels = labels_n_doses_n_weeks(n, per);
               break;
             }
             case "n_doses_3_months": {
-              const n = num("n");
-              if (!n) {
-                issues.push("Informe N (doses).");
-                break;
+              const n = getValNum(p, "n");
+              if (!n)
+                issues.push(`[${drug.name || "sem nome"}] Informe N (doses).`);
+              else {
+                labels = labels_n_doses_3_months(n);
+                issues.push(
+                  "Aproximação: 1 mês ≈ 30 dias (3 meses ≈ 90 dias).",
+                );
               }
-              labels = labels_n_doses_3_months(n);
-              issues.push("Aproximação: 1 mês ≈ 30 dias (3 meses ≈ 90 dias).");
               break;
             }
             case "n_doses_n_months": {
-              const n = num("n"),
-                p = num("p");
-              if (!n || !p) {
-                issues.push("Informe N (doses) e período em meses.");
-                break;
+              const n = getValNum(p, "n"),
+                per = getValNum(p, "p");
+              if (!n || !per)
+                issues.push(
+                  `[${drug.name || "sem nome"}] Informe N (doses) e período (meses).`,
+                );
+              else {
+                labels = labels_n_doses_n_months(n, per);
+                issues.push("Aproximação: 1 mês ≈ 30 dias.");
               }
-              labels = labels_n_doses_n_months(n, p);
-              issues.push("Aproximação: 1 mês ≈ 30 dias.");
               break;
             }
 
@@ -1284,63 +1224,70 @@
               break;
             }
             case "days_custom": {
-              const list = (
-                document.querySelector('[data-key="list"]')?.value || ""
-              ).trim();
-              if (!list) {
-                issues.push("Informe a lista de dias (ex.: 0, 14, 28).");
-                break;
-              }
-              labels = labels_days_custom(list);
+              const list = p["list"];
+              if (!list)
+                issues.push(
+                  `[${drug.name || "sem nome"}] Informe a lista de dias.`,
+                );
+              else labels = labels_days_custom(list);
               break;
             }
 
             // Avançadas
             case "daily_x_then_weekly_y": {
-              const x = num("x"),
-                y = num("y");
-              if (!x || !y) {
-                issues.push("Informe X (dias) e Y (semanas).");
-                break;
+              const x = getValNum(p, "x"),
+                y = getValNum(p, "y");
+              if (!x || !y)
+                issues.push(
+                  `[${drug.name || "sem nome"}] Informe X (dias) e Y (semanas).`,
+                );
+              else {
+                const comp = labels_daily_x_then_weekly_y(x, y);
+                comp.blocks.forEach((b) => (labels = labels.concat(b.labels)));
               }
-              composite = labels_daily_x_then_weekly_y(x, y);
               break;
             }
             case "weekly_x_then_monthly_y": {
-              const x = num("x"),
-                y = num("y");
-              if (!x || !y) {
-                issues.push("Informe X (semanas) e Y (meses).");
-                break;
+              const x = getValNum(p, "x"),
+                y = getValNum(p, "y");
+              if (!x || !y)
+                issues.push(
+                  `[${drug.name || "sem nome"}] Informe X (semanas) e Y (meses).`,
+                );
+              else {
+                const comp = labels_weekly_x_then_monthly_y(x, y);
+                comp.blocks.forEach((b) => (labels = labels.concat(b.labels)));
               }
-              composite = labels_weekly_x_then_monthly_y(x, y);
               break;
             }
             case "every_x_days_until_n_doses": {
-              const x = num("x"),
-                n = num("n");
-              if (!x || !n) {
-                issues.push("Informe X (dias) e N (doses).");
-                break;
-              }
-              labels = labels_every_x_days_until_n_doses(x, n);
+              const x = getValNum(p, "x"),
+                n = getValNum(p, "n");
+              if (!x || !n)
+                issues.push(
+                  `[${drug.name || "sem nome"}] Informe X (dias) e N (doses).`,
+                );
+              else labels = labels_every_x_days_until_n_doses(x, n);
               break;
             }
           }
-
-          return { labels, composite, issues };
+          return { labels, issues };
         }
 
-        // ===== Build table
+        /* =========================
+         * Tabela: agregação por marco (rótulo)
+         * ========================= */
+        function clearResult() {
+          resultBody.innerHTML = "";
+        }
         function generateTable() {
           clearIssues();
           clearResult();
-          seenVia = {};
-
+          let seenViaGlobal = {}; // para primeira ocorrência expandir via
           const drugs = collectDrugs();
           if (drugs.length === 0) addIssue("Nenhum fármaco informado.");
 
-          // checagens mínimas de fármacos
+          // validações mínimas por fármaco
           drugs.forEach((d) => {
             if (!d.via)
               addIssue(`Via não especificada em: "${d.name || "(sem nome)"}".`);
@@ -1350,71 +1297,131 @@
               );
           });
 
-          const { labels, composite, issues } = generateLabels();
-          issues.forEach(addIssue);
+          // mapa label -> { meds:[], obs:Set }
+          const bucket = new Map();
 
-          // Sem labels = nada a renderizar
-          let rows = [];
-          if (composite) {
-            // Blocos sequenciais
-            composite.blocks.forEach((blk, idx) => {
-              blk.labels.forEach((lab) => {
-                rows.push({ label: lab, meds: [], obs: [] });
-              });
+          drugs.forEach((d) => {
+            const { labels, issues } = generateLabelsForDrug(d);
+            issues.forEach(addIssue);
+            if (labels.length === 0) return;
+
+            labels.forEach((lab) => {
+              if (!bucket.has(lab))
+                bucket.set(lab, { meds: [], obs: new Set() });
+              const entry = bucket.get(lab);
+
+              // Monta string do medicamento com via (primeira ocorrência com descrição completa)
+              const medStr = buildMedString(d, seenViaGlobal);
+              entry.meds.push(medStr);
+
+              // Observações: quebrar por | ou ; e evitar duplicata
+              String(d.obs || "")
+                .split(/(?:\s*\|\s*|\s*;\s*)/)
+                .forEach((o) => {
+                  const s = o.trim();
+                  if (s) entry.obs.add(s);
+                });
             });
-          } else {
-            (labels || []).forEach((lab) =>
-              rows.push({ label: lab, meds: [], obs: [] }),
-            );
-          }
+          });
 
-          if (rows.length === 0) {
-            addIssue("Nenhuma linha gerada. Verifique os campos do padrão.");
+          if (bucket.size === 0) {
+            addIssue(
+              "Nenhuma linha gerada. Verifique os protocolos individuais.",
+            );
             showIssuesIfAny();
             return;
           }
 
-          // Consolidar fármacos em TODAS as labels (cada label recebe os mesmos fármacos)
-          // Racional: o padrão de ritmo vale para a lista de fármacos inteira.
-          rows.forEach((r) => {
-            const medsStrs = drugs.map((d) => buildMedString(d));
-            r.meds = medsStrs;
-            // Observações combinadas (sem duplicar)
-            const allObs = uniq(
-              drugs.flatMap((d) => (d.obs || "").split(/(?:\s*\|\s*|\s*;\s*)/)),
-            );
-            r.obs = allObs;
+          // Ordenação estável por “Dia N” => extrai número; “Semana N” idem; caso contrário alfabético
+          const labelsSorted = Array.from(bucket.keys()).sort((a, b) => {
+            const dA = a.match(/Dia\s+(\d+)/);
+            const dB = b.match(/Dia\s+(\d+)/);
+            if (dA && dB) return Number(dA[1]) - Number(dB[1]);
+            const sA = a.match(/Semana\s+(\d+)/);
+            const sB = b.match(/Semana\s+(\d+)/);
+            if (sA && sB) return Number(sA[1]) - Number(sB[1]);
+            // misto: prioridade para "Dia", depois "Semana", depois alfabético
+            if (dA && !dB) return -1;
+            if (!dA && dB) return 1;
+            if (sA && !sB) return -1;
+            if (!sA && sB) return 1;
+            return a.localeCompare(b, "pt-BR");
           });
 
-          // Render
-          rows.forEach((r) => {
+          labelsSorted.forEach((lab, idx) => {
+            const data = bucket.get(lab);
             const tr = document.createElement("tr");
+            const medsStr = data.meds.join(" // ");
+            const obsStr = Array.from(data.obs.values()).join(" | ");
             tr.innerHTML = `
-        <td><div class="checkbox" tabindex="0" role="checkbox" aria-checked="false"></div></td>
-        <td>${r.label}</td>
-        <td>${r.meds.join(" // ")}</td>
-        <td>${r.obs.join(" | ")}</td>
-      `;
+              <td>
+                <div class="check" role="checkbox" tabindex="0" aria-checked="false" aria-label="Marcar linha como aplicada"></div>
+              </td>
+              <td>${lab}</td>
+              <td>${medsStr}</td>
+              <td>${obsStr}</td>
+            `;
             resultBody.appendChild(tr);
+          });
+
+          // ativa checkboxes
+          resultBody.querySelectorAll(".check").forEach((el) => {
+            el.addEventListener("click", () => toggleCheck(el));
+            el.addEventListener("keydown", (e) => {
+              if (e.key === " " || e.key === "Enter") {
+                e.preventDefault();
+                toggleCheck(el);
+              }
+            });
           });
 
           showIssuesIfAny();
         }
 
-        // ===== Events
-        btnGenerate.addEventListener("click", generateTable);
-        btnPrint.addEventListener("click", () => window.print());
-        btnReset.addEventListener("click", () => {
-          // limpa tudo
+        function toggleCheck(el) {
+          const curr = el.getAttribute("aria-checked") === "true";
+          el.setAttribute("aria-checked", String(!curr));
+        }
+
+        // Botões principais
+        $("#btnGenerate").addEventListener("click", generateTable);
+        $("#btnPrint").addEventListener("click", () => window.print());
+        $("#btnReset").addEventListener("click", () => {
           titleInput.value = "";
           syncTitle();
-          patternSelect.selectedIndex = 0;
-          renderPatternFields();
           drugBody.innerHTML = "";
           addDrugRow();
           clearIssues();
           clearResult();
         });
+
+        /* =========================
+         * Testes unitários simples (console)
+         * ========================= */
+        (function runTinyTests() {
+          const assert = (cond, label) =>
+            console[cond ? "log" : "error"](
+              `[teste] ${label} -> ${cond ? "ok" : "falhou"}`,
+            );
+          assert(
+            normalizeDoseSpacing("1.5mg") === "1,5 mg",
+            "normaliza dose com ponto/unidade",
+          );
+          assert(
+            JSON.stringify(labels_daily_n_days(3)) ===
+              JSON.stringify([
+                "Dose 1 (Dia 0)",
+                "Dose 2 (Dia 1)",
+                "Dose 3 (Dia 2)",
+              ]),
+            "labels_daily_n_days(3)",
+          );
+          const custom = labels_days_custom("0, 14; 28   60");
+          assert(
+            custom.length === 4 && custom[1].includes("14"),
+            "labels_days_custom parsing",
+          );
+        })();
       })();
     </script>
   </body>
